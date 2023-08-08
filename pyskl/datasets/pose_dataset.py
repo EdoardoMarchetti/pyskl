@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import numpy as np
+import pandas as pd
 import mmcv
 import os.path as osp
 
@@ -43,6 +45,7 @@ class PoseDataset(BaseDataset):
 
     def __init__(self,
                  ann_file,
+                 mapping_file,
                  pipeline,
                  split=None,
                  valid_ratio=None,
@@ -56,6 +59,8 @@ class PoseDataset(BaseDataset):
 
         super().__init__(
             ann_file, pipeline, start_index=0, modality=modality, memcached=memcached, mc_cfg=mc_cfg, **kwargs)
+        #Store the path of the mapping file
+        self.mapping_file = mapping_file
 
         # box_thr, which should be a string
         self.box_thr = box_thr
@@ -97,10 +102,18 @@ class PoseDataset(BaseDataset):
             split = set(split[self.split])
             data = [x for x in data if x[identifier] in split]
 
+        #If mapping is required load the mapping file
+        mapping = pd.read_csv(self.mapping_file, header = None)
+        valid_joints = mapping[~mapping.iloc[:,1].isna()].astype(np.int32)
+        valid_joints = valid_joints.sort_values(by=1)
+
         for item in data:
             # Sometimes we may need to load anno from the file
             if 'filename' in item:
                 item['filename'] = osp.join(self.data_prefix, item['filename'])
             if 'frame_dir' in item:
                 item['frame_dir'] = osp.join(self.data_prefix, item['frame_dir'])
+            
+            #Map the keypoint to Gymnasio format
+            item['keypoint'] = item['keypoint'][:,:,valid_joints[0]-1]
         return data
