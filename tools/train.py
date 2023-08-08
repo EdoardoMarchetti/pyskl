@@ -122,6 +122,7 @@ def main():
     if dv(torch.__version__) >= dv('2.0.0') and args.compile:
         model = torch.compile(model)
 
+    logger.info(f'Building the dataset')
     datasets = [build_dataset(cfg.data.train)]
 
     cfg.workflow = cfg.get('workflow', [('train', 1)])

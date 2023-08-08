@@ -202,6 +202,7 @@ class RandomGaussianNoise:
         return results
 
 
+
 @PIPELINES.register_module()
 class PreNormalize3D:
     """PreNormalize for NTURGB+D 3D keypoints (x, y, z). Codes adapted from https://github.com/lshiwjx/2s-AGCN. """
@@ -266,14 +267,20 @@ class PreNormalize3D:
         if self.align_center:
             if skeleton.shape[2] == 25:
                 main_body_center = skeleton[0, 0, 1].copy()
+            elif skeleton.shape[2] == 14: #Gymnasio
+                main_body_center = skeleton[0,0,7] - skeleton[0,0,8]
             else:
                 main_body_center = skeleton[0, 0, -1].copy()
             mask = ((skeleton != 0).sum(-1) > 0)[..., None]
             skeleton = (skeleton - main_body_center) * mask
 
         if self.align_spine:
-            joint_bottom = skeleton[0, 0, self.zaxis[0]]
-            joint_top = skeleton[0, 0, self.zaxis[1]]
+            if skeleton.shape[2] == 14: #Gymnasio
+                joint_bottom = skeleton[0,0,7] - skeleton[0,0,8] # Hips' center
+                joint_top = skeleton[0, 0, -1] #Neck
+            else:
+                joint_bottom = skeleton[0, 0, self.zaxis[0]]
+                joint_top = skeleton[0, 0, self.zaxis[1]]
             axis = np.cross(joint_top - joint_bottom, [0, 0, 1])
             angle = self.angle_between(joint_top - joint_bottom, [0, 0, 1])
             matrix_z = self.rotation_matrix(axis, angle)
