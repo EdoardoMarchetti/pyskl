@@ -83,7 +83,7 @@ class Graph:
         self.nx_node = nx_node
 
         assert nx_node == 1 or mode == 'random', "nx_node can be > 1 only if mode is 'random'"
-        assert layout in ['openpose', 'nturgb+d', 'coco', 'handmp']
+        assert layout in ['openpose', 'nturgb+d', 'coco', 'handmp', 'gymnasio']
 
         self.get_layout(layout)
         self.hop_dis = get_hop_distance(self.num_node, self.inward, max_hop)
