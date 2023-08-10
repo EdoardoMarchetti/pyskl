@@ -15,7 +15,7 @@ model = dict(
 
 dataset_type = 'PoseDataset'
 ann_file = 'data/nturgbd/ntu60_3danno.pkl'
-mapping_file = 'mapping/ntu_to_gymnasio.txt'
+mapping_file = None
 train_pipeline = [
     dict(type='PreNormalize3D', align_spine=False, xaxis = [7,8]),
     dict(type='RandomRot', theta=0.2),
