@@ -15,9 +15,9 @@ model = dict(
 
 dataset_type = 'PoseDataset'
 ann_file = 'data/nturgbd/ntu60_3danno.pkl'
-mapping_file = None
+
 train_pipeline = [
-    dict(type='PreNormalize3D', align_spine=False, xaxis = [7,8]),
+    dict(type='PreNormalize3D', align_spine=False),
     dict(type='RandomRot', theta=0.2),
     dict(type='GenSkeFeat', feats=[modality]),
     dict(type='UniformSampleDecode', clip_len=100),
@@ -26,7 +26,7 @@ train_pipeline = [
     dict(type='ToTensor', keys=['keypoint'])
 ]
 val_pipeline = [
-    dict(type='PreNormalize3D', align_spine=False, xaxis = [7,8]),
+    dict(type='PreNormalize3D', align_spine=False),
     dict(type='GenSkeFeat', feats=[modality]),
     dict(type='UniformSampleDecode', clip_len=100, num_clips=1),
     dict(type='FormatGCNInput'),
@@ -34,7 +34,7 @@ val_pipeline = [
     dict(type='ToTensor', keys=['keypoint'])
 ]
 test_pipeline = [
-    dict(type='PreNormalize3D', align_spine=False, xaxis = [7,8]),
+    dict(type='PreNormalize3D', align_spine=False),
     dict(type='GenSkeFeat', feats=[modality]),
     dict(type='UniformSampleDecode', clip_len=100, num_clips=10),
     dict(type='FormatGCNInput'),
@@ -45,9 +45,9 @@ data = dict(
     videos_per_gpu=16,
     workers_per_gpu=4,
     test_dataloader=dict(videos_per_gpu=1),
-    train=dict(type=dataset_type, ann_file=ann_file, mapping_file=mapping_file, pipeline=train_pipeline, split='xsub_train'),
-    val=dict(type=dataset_type, ann_file=ann_file, mapping_file=mapping_file, pipeline=val_pipeline, split='xsub_val'),
-    test=dict(type=dataset_type, ann_file=ann_file, mapping_file=mapping_file, pipeline=test_pipeline, split='xsub_val'))
+    train=dict(type=dataset_type, ann_file=ann_file, pipeline=train_pipeline, split='xsub_train'),
+    val=dict(type=dataset_type, ann_file=ann_file,  pipeline=val_pipeline, split='xsub_val'),
+    test=dict(type=dataset_type, ann_file=ann_file,  pipeline=test_pipeline, split='xsub_val'))
 
 # optimizer, 4GPU
 optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0005, nesterov=True)
