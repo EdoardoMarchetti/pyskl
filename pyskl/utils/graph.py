@@ -129,6 +129,13 @@ class Graph:
                 (15, 14), (16, 15), (17, 0), (18, 17), (19, 18), (20, 19)
             ]
             self.center = 0
+        elif layout == 'gymnasio':
+            self.num_node = 15
+            self.inward = [
+                (0,13),(13,1),(1,3),(3,5),(2,4),(4,6),
+                (13,14),(14,7),(7,9),(9,11),(14,8),(8,10),(10,12)
+            ]
+            self.center = 14
         else:
             raise ValueError(f'Do Not Exist This Layout: {layout}')
         self.self_link = [(i, i) for i in range(self.num_node)]
