@@ -1,6 +1,6 @@
 modality = 'b'
 graph = 'gymnasio'
-work_dir = f'./work_dirs/dgstgcn/ntu60_xsub_3dkp/{modality}'
+work_dir = f'./work_dirs/dgstgcn/ntu60_xsub_3dkp/{modality}_map'
 
 model = dict(
     type='RecognizerGCN',
