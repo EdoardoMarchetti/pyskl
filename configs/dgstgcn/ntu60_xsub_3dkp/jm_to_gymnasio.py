@@ -1,6 +1,6 @@
 modality = 'jm'
 graph = 'gymnasio'
-work_dir = f'./work_dirs/dgstgcn/ntu60_xsub_3dkp/{modality}'
+work_dir = f'./work_dirs/dgstgcn/ntu60_xsub_3dkp/{modality}_map'
 
 model = dict(
     type='RecognizerGCN',
@@ -15,7 +15,7 @@ model = dict(
 
 dataset_type = 'PoseDataset'
 ann_file = 'data/nturgbd/ntu60_3danno.pkl'
-mapping = 'pyskl/datasets/mapping/ntu_to_gymnasio.txt'
+mapping_file = 'pyskl/datasets/mapping/ntu_to_gymnasio.txt'
 
 train_pipeline = [
     dict(type='PreNormalize3D', align_spine=False),
@@ -46,9 +46,9 @@ data = dict(
     videos_per_gpu=16,
     workers_per_gpu=4,
     test_dataloader=dict(videos_per_gpu=1),
-    train=dict(type=dataset_type, ann_file=ann_file, pipeline=train_pipeline, split='xsub_train'),
-    val=dict(type=dataset_type, ann_file=ann_file, pipeline=val_pipeline, split='xsub_val'),
-    test=dict(type=dataset_type, ann_file=ann_file, pipeline=test_pipeline, split='xsub_val'))
+    train=dict(type=dataset_type, ann_file=ann_file, mapping_file = mapping_file, pipeline=train_pipeline, split='xsub_train'),
+    val=dict(type=dataset_type, ann_file=ann_file, mapping_file = mapping_file, pipeline=val_pipeline, split='xsub_val'),
+    test=dict(type=dataset_type, ann_file=ann_file, mapping_file = mapping_file, pipeline=test_pipeline, split='xsub_val'))
 
 # optimizer, 4GPU
 optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0005, nesterov=True)
