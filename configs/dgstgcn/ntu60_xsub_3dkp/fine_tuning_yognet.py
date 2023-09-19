@@ -1,6 +1,6 @@
 modality = 'j'
 graph = 'gymnasio'
-work_dir = f'./work_dirs/dgstgcn/ntu60_xsub_3dkp/fine_tuning/{modality}'
+work_dir = f'./work_dirs/dgstgcn/ntu60_xsub_3dkp/fine_tuning/yognet/{modality}'
 
 model = dict(
     cls_head=dict(type='GCNHead', num_classes=20, in_channels=256))
@@ -41,6 +41,8 @@ data = dict(
     train=dict(type=dataset_type, ann_file=ann_file, mapping_file = mapping_file,  pipeline=train_pipeline, split='xsub_train'),
     val=dict(type=dataset_type, ann_file=ann_file, mapping_file = mapping_file, pipeline=val_pipeline, split='xsub_val'),
     test=dict(type=dataset_type, ann_file=ann_file, mapping_file = mapping_file, pipeline=test_pipeline, split='xsub_val'))
+
+load_from = INSERIRE IL PERCORSO AL MODELLO
 
 # optimizer, 4GPU
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005, nesterov=True)
