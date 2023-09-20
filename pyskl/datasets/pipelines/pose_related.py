@@ -298,7 +298,7 @@ class JointToBone:
     def __init__(self, dataset='nturgb+d', target='keypoint'):
         self.dataset = dataset
         self.target = target
-        if self.dataset not in ['nturgb+d', 'openpose', 'coco', 'handmp']:
+        if self.dataset not in ['nturgb+d', 'openpose', 'coco', 'handmp', 'gymnasio']:
             raise ValueError(
                 f'The dataset type {self.dataset} is not supported')
         if self.dataset == 'nturgb+d':
